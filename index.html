@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eaglepunk — Bières artisanales</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #050505;
+      --bg-soft: #0b0b0b;
+      --panel: #0e0e0e;
+      --panel-2: #111111;
+      --panel-3: #090909;
+      --gold: #c89a43;
+      --gold-2: #ad7f2d;
+      --gold-light: #edd2a1;
+      --text: #f2eee7;
+      --muted: #c1b9ac;
+      --muted-2: #8f887d;
+      --line: rgba(200, 154, 67, 0.18);
+      --line-strong: rgba(200, 154, 67, 0.28);
+      --shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+      --ipa: #6daa37;
+      --blonde: #d5a823;
+      --red: #c43a34;
+      --american: #3567c7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background:
+        radial-gradient(circle at top center, rgba(200, 154, 67, 0.06), transparent 38%),
+        linear-gradient(180deg, #070707 0%, #040404 100%);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .site-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 20;
+      padding: 20px 0 0;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 28px;
+      border-radius: 2px;
+      overflow: hidden;
+      opacity: 0.95;
+      filter: sepia(1) saturate(1.1) hue-rotate(-8deg) brightness(0.98);
+    }
+
+    .brand-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 18%;
+      transform: scale(1.45);
+    }
+
+    .brand-wordmark {
+      font-family: 'Oswald', sans-serif;
+      font-size: 2rem;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      color: #f0ece2;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(18px, 2vw, 38px);
+      flex: 1;
+    }
+
+    .main-nav a {
+      position: relative;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: rgba(255, 255, 255, 0.9);
+      text-transform: uppercase;
+      padding: 10px 0;
+      white-space: nowrap;
+    }
+
+    .main-nav a.active::after,
+    .main-nav a:hover::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, rgba(200, 154, 67, 0), var(--gold), rgba(200, 154, 67, 0));
+      box-shadow: 0 0 18px rgba(200, 154, 67, 0.35);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .icon-btn {
+      position: relative;
+      width: 38px;
+      height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      color: rgba(255, 255, 255, 0.92);
+      border-radius: 50%;
+      transition: transform 0.25s ease, color 0.25s ease;
+    }
+
+    .icon-btn:hover {
+      transform: translateY(-1px);
+      color: var(--gold-light);
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      border-radius: 999px;
+      background: var(--gold);
+      color: #0a0a0a;
+      font-size: 0.63rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 12px rgba(200, 154, 67, 0.45);
+    }
+
+    .hero {
+      position: relative;
+      min-height: 840px;
+      display: flex;
+      align-items: center;
+      padding: 120px 0 0;
+      background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.76) 35%, rgba(0, 0, 0, 0.58) 52%, rgba(0, 0, 0, 0.70) 100%),
+        url('assets/images/background.png') center center / cover no-repeat;
+      border-bottom: 1px solid rgba(200, 154, 67, 0.12);
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .hero::before {
+      background:
+        radial-gradient(circle at 21% 58%, rgba(216, 150, 41, 0.24), transparent 20%),
+        radial-gradient(circle at 68% 36%, rgba(216, 150, 41, 0.10), transparent 23%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.18));
+      mix-blend-mode: screen;
+      opacity: 0.7;
+    }
+
+    .hero::after {
+      background: linear-gradient(180deg, rgba(5, 5, 5, 0.15), rgba(5, 5, 5, 0.72) 88%, rgba(5, 5, 5, 0.95) 100%);
+    }
+
+    .hero > .container-xxl {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-copy {
+      max-width: 560px;
+      padding-top: 30px;
+    }
+
+    .hero-title {
+      margin: 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.6rem, 6vw, 5.9rem);
+      line-height: 0.93;
+      font-weight: 600;
+      letter-spacing: 0.015em;
+      text-transform: uppercase;
+      color: #f5f1ea;
+      text-wrap: balance;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.32);
+    }
+
+    .hero-divider {
+      width: 84px;
+      height: 6px;
+      margin: 28px 0 24px;
+      background: linear-gradient(90deg, var(--gold), #d8b46b);
+      box-shadow: 0 0 16px rgba(200, 154, 67, 0.2);
+    }
+
+    .hero-text {
+      margin: 0;
+      font-size: 1.18rem;
+      line-height: 1.85;
+      color: rgba(234, 230, 223, 0.86);
+      max-width: 460px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 18px 26px;
+      margin-top: 34px;
+    }
+
+    .btn-gold {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 56px;
+      padding: 0 28px;
+      border: none;
+      border-radius: 0;
+      background: linear-gradient(180deg, #ddb761 0%, #c99a43 100%);
+      color: #080808;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+      color: #080808;
+    }
+
+    .text-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      color: rgba(255, 255, 255, 0.9);
+      text-transform: uppercase;
+    }
+
+    .text-link i {
+      font-size: 1.05rem;
+      color: var(--gold);
+    }
+
+    .hero-logo-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 660px;
+    }
+
+    .hero-logo-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 12% 10% 8%;
+      background:
+        radial-gradient(circle at center, rgba(200, 154, 67, 0.16), transparent 46%),
+        linear-gradient(180deg, rgba(200, 154, 67, 0.06), rgba(200, 154, 67, 0));
+      filter: blur(24px);
+      pointer-events: none;
+    }
+
+    .hero-logo {
+      width: min(100%, 760px);
+      margin-left: auto;
+      filter: sepia(1) saturate(1.08) hue-rotate(-8deg) brightness(1.03);
+      opacity: 0.97;
+      transform: translateY(18px);
+    }
+
+    .feature-bar {
+      position: relative;
+      background:
+        linear-gradient(180deg, rgba(9, 9, 9, 0.98), rgba(4, 4, 4, 0.98));
+      border-top: 1px solid rgba(200, 154, 67, 0.12);
+      border-bottom: 1px solid rgba(200, 154, 67, 0.16);
+      z-index: 5;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      padding: 28px 22px;
+      min-height: 118px;
+      position: relative;
+    }
+
+    .feature-item::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 22px;
+      bottom: 22px;
+      width: 1px;
+      background: linear-gradient(180deg, rgba(200, 154, 67, 0), rgba(200, 154, 67, 0.28), rgba(200, 154, 67, 0));
+    }
+
+    .feature-item.last::after {
+      display: none;
+    }
+
+    .feature-icon {
+      width: 44px;
+      flex-shrink: 0;
+      filter: sepia(1) saturate(1.1) hue-rotate(-8deg) brightness(1.02);
+      opacity: 0.96;
+      margin-top: 2px;
+    }
+
+    .feature-title {
+      margin: 0 0 6px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.1rem;
+      line-height: 1.05;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #f2ede3;
+    }
+
+    .feature-text {
+      margin: 0;
+      color: rgba(225, 218, 205, 0.78);
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+
+    .section-shell {
+      padding: 84px 0 62px;
+      background: transparent;
+    }
+
+    .section-heading {
+      margin-bottom: 46px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .eyebrow::before,
+    .eyebrow::after {
+      content: '';
+      width: 34px;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(200, 154, 67, 0), rgba(200, 154, 67, 0.8));
+    }
+
+    .eyebrow::after {
+      background: linear-gradient(90deg, rgba(200, 154, 67, 0.8), rgba(200, 154, 67, 0));
+    }
+
+    .section-title {
+      margin: 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.7rem, 4.2vw, 4.5rem);
+      line-height: 0.95;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      color: #f4f0e7;
+    }
+
+    .beer-card {
+      position: relative;
+      min-height: 388px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 24px 28px 26px;
+      background:
+        linear-gradient(180deg, rgba(13, 13, 13, 0.98), rgba(7, 7, 7, 1));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 0 0 1px rgba(200, 154, 67, 0.03);
+      overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      isolation: isolate;
+    }
+
+    .beer-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('assets/images/eagle_hero.png');
+      background-size: 115% auto;
+      background-position: center 18px;
+      background-repeat: no-repeat;
+      opacity: 0.10;
+      filter: grayscale(1) brightness(1.25);
+      z-index: -2;
+    }
+
+    .beer-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 26%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 36%),
+        linear-gradient(180deg, color-mix(in srgb, var(--accent) 14%, transparent) 0%, transparent 34%),
+        linear-gradient(180deg, transparent 64%, rgba(0, 0, 0, 0.88) 100%);
+      z-index: -1;
+    }
+
+    .beer-card:hover {
+      transform: translateY(-6px);
+      border-color: color-mix(in srgb, var(--accent) 55%, rgba(255, 255, 255, 0.18));
+      box-shadow: 0 26px 44px rgba(0, 0, 0, 0.34), 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent);
+    }
+
+    .beer-brand {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.92);
+      text-align: center;
+      margin-bottom: 112px;
+    }
+
+    .beer-name {
+      margin: 0;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.7rem, 5vw, 5.1rem);
+      line-height: 0.88;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      text-align: center;
+      color: var(--accent);
+      text-shadow: 0 0 18px color-mix(in srgb, var(--accent) 25%, transparent);
+    }
+
+    .beer-subtitle {
+      margin-top: 10px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: center;
+      color: var(--accent);
+    }
+
+    .beer-copy {
+      margin: 18px 0 0;
+      text-align: center;
+      color: rgba(236, 231, 222, 0.83);
+      line-height: 1.55;
+      font-size: 0.98rem;
+      min-height: 72px;
+    }
+
+    .beer-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      align-self: center;
+      min-width: 148px;
+      min-height: 46px;
+      margin-top: 18px;
+      border: 2px solid color-mix(in srgb, var(--accent) 80%, #ffffff 10%);
+      color: #f4f0e9;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: background 0.25s ease, transform 0.25s ease;
+      background: rgba(0, 0, 0, 0.18);
+    }
+
+    .beer-btn:hover {
+      background: color-mix(in srgb, var(--accent) 20%, transparent);
+      transform: translateY(-1px);
+      color: #fff;
+    }
+
+    .beer-card--ipa { --accent: var(--ipa); }
+    .beer-card--blonde { --accent: var(--blonde); }
+    .beer-card--red { --accent: var(--red); }
+    .beer-card--american { --accent: var(--american); }
+
+    .story-section {
+      padding: 28px 0 0;
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1.06fr 1fr;
+      background: rgba(7, 7, 7, 0.72);
+      border-top: 1px solid rgba(200, 154, 67, 0.14);
+      border-bottom: 1px solid rgba(200, 154, 67, 0.14);
+      overflow: hidden;
+    }
+
+    .story-visual {
+      position: relative;
+      min-height: 420px;
+      background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.28)),
+        url('assets/images/story.png') center center / cover no-repeat;
+    }
+
+    .story-badge {
+      position: absolute;
+      left: 34px;
+      bottom: 32px;
+      width: 182px;
+      height: 182px;
+      border-radius: 50%;
+      border: 3px solid rgba(200, 154, 67, 0.86);
+      background: rgba(8, 8, 8, 0.4);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      color: var(--gold);
+    }
+
+    .story-badge img {
+      width: 40px;
+      filter: sepia(1) saturate(1.1) hue-rotate(-8deg) brightness(1.02);
+      opacity: 0.95;
+      margin-bottom: 10px;
+    }
+
+    .story-badge span {
+      display: block;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.93rem;
+      line-height: 1.2;
+      font-weight: 500;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .story-copy-wrap {
+      padding: 46px 40px 48px 48px;
+      display: flex;
+      align-items: center;
+    }
+
+    .story-copy {
+      max-width: 580px;
+    }
+
+    .story-kicker {
+      margin-bottom: 12px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .story-title {
+      margin: 0 0 18px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      line-height: 0.95;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      color: #f4efe7;
+    }
+
+    .story-copy p {
+      margin: 0 0 10px;
+      color: rgba(232, 227, 219, 0.82);
+      line-height: 1.62;
+      font-size: 1.02rem;
+    }
+
+    .newsletter-band {
+      position: relative;
+      padding: 28px 0;
+      background:
+        radial-gradient(circle at left, rgba(200, 154, 67, 0.06), transparent 25%),
+        linear-gradient(90deg, #131313 0%, #0e0e0e 100%);
+      border-top: 1px solid rgba(200, 154, 67, 0.18);
+      border-bottom: 1px solid rgba(200, 154, 67, 0.12);
+    }
+
+    .tribe-box {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .tribe-icon {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      border: 2px solid rgba(200, 154, 67, 0.45);
+      background: rgba(7, 7, 7, 0.46);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    .tribe-icon img {
+      width: 52px;
+      filter: sepia(1) saturate(1.05) hue-rotate(-8deg) brightness(1.02);
+    }
+
+    .tribe-title {
+      margin: 0 0 4px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3vw, 3.2rem);
+      line-height: 0.95;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #f2ede5;
+    }
+
+    .tribe-text {
+      margin: 0;
+      color: rgba(232, 226, 216, 0.78);
+      line-height: 1.5;
+      font-size: 0.98rem;
+    }
+
+    .newsletter-form {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 0;
+      border: 1px solid rgba(200, 154, 67, 0.34);
+      background: rgba(6, 6, 6, 0.55);
+      min-height: 62px;
+    }
+
+    .newsletter-form input {
+      width: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      padding: 0 20px;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .newsletter-form input::placeholder {
+      color: rgba(233, 229, 223, 0.6);
+    }
+
+    .newsletter-form button {
+      border: none;
+      background: linear-gradient(180deg, #ddb761 0%, #c99a43 100%);
+      color: #080808;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: filter 0.25s ease;
+    }
+
+    .newsletter-form button:hover {
+      filter: brightness(1.05);
+    }
+
+    .site-footer {
+      padding: 34px 0 24px;
+      background: #060606;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr 0.9fr 1fr auto;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .footer-brand-word {
+      font-family: 'Oswald', sans-serif;
+      font-size: 2.2rem;
+      line-height: 0.95;
+      letter-spacing: 0.03em;
+      color: #f2ede4;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .footer-brand-sub {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+
+    .socials {
+      display: flex;
+      gap: 14px;
+    }
+
+    .socials a {
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      font-size: 1.25rem;
+      transition: transform 0.25s ease, color 0.25s ease;
+    }
+
+    .socials a:hover {
+      transform: translateY(-2px);
+      color: var(--gold-light);
+    }
+
+    .footer-title {
+      margin: 0 0 14px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #f0ece3;
+    }
+
+    .footer-links {
+      display: grid;
+      gap: 8px;
+    }
+
+    .footer-links a,
+    .footer-links span,
+    .footer-links li {
+      color: rgba(232, 226, 215, 0.74);
+      font-size: 0.98rem;
+      line-height: 1.55;
+      list-style: none;
+    }
+
+    .footer-links a:hover {
+      color: #fff;
+    }
+
+    .footer-badge {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.03);
+      color: white;
+      flex-direction: column;
+      text-align: center;
+      padding: 14px;
+    }
+
+    .footer-badge .badge-country {
+      font-size: 2.3rem;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .footer-badge .badge-small {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.6rem;
+      line-height: 1.25;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .footer-bottom {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(200, 154, 67, 0.1);
+      text-align: center;
+      color: rgba(200, 194, 184, 0.58);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 1199.98px) {
+      .main-nav {
+        gap: 18px;
+      }
+
+      .main-nav a {
+        font-size: 0.88rem;
+      }
+
+      .hero-logo-wrap {
+        min-height: 560px;
+      }
+
+      .footer-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .footer-badge {
+        justify-self: start;
+      }
+    }
+
+    @media (max-width: 991.98px) {
+      .site-header {
+        padding-top: 18px;
+      }
+
+      .header-inner {
+        flex-wrap: wrap;
+        row-gap: 16px;
+      }
+
+      .main-nav {
+        order: 3;
+        width: 100%;
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 6px;
+      }
+
+      .main-nav::-webkit-scrollbar {
+        height: 6px;
+      }
+
+      .main-nav::-webkit-scrollbar-thumb {
+        background: rgba(200, 154, 67, 0.35);
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 170px 0 24px;
+      }
+
+      .hero-copy {
+        max-width: none;
+      }
+
+      .hero-logo-wrap {
+        min-height: auto;
+        margin-top: 18px;
+      }
+
+      .hero-logo {
+        width: min(92vw, 640px);
+        margin: 0 auto;
+        transform: none;
+      }
+
+      .feature-item::after {
+        display: none;
+      }
+
+      .story-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .story-visual {
+        min-height: 360px;
+      }
+
+      .story-copy-wrap {
+        padding: 34px 26px 36px;
+      }
+
+      .newsletter-form {
+        grid-template-columns: 1fr;
+      }
+
+      .newsletter-form button {
+        min-height: 58px;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .brand-wordmark {
+        font-size: 1.7rem;
+      }
+
+      .header-actions {
+        gap: 10px;
+      }
+
+      .hero-title {
+        font-size: clamp(2.85rem, 11vw, 4.1rem);
+      }
+
+      .hero-text {
+        font-size: 1rem;
+        line-height: 1.75;
+      }
+
+      .hero-actions {
+        gap: 16px;
+      }
+
+      .btn-gold,
+      .text-link {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .feature-item {
+        padding: 24px 12px;
+      }
+
+      .section-shell {
+        padding: 64px 0 46px;
+      }
+
+      .beer-card {
+        min-height: 364px;
+      }
+
+      .beer-brand {
+        margin-bottom: 100px;
+      }
+
+      .story-badge {
+        width: 150px;
+        height: 150px;
+        left: 20px;
+        bottom: 20px;
+      }
+
+      .tribe-box {
+        align-items: flex-start;
+      }
+
+      .tribe-icon {
+        width: 68px;
+        height: 68px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-badge {
+        justify-self: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container-xxl px-4 px-lg-5">
+      <div class="header-inner">
+        <a href="#" class="brand" aria-label="Eaglepunk">
+          <span class="brand-mark">
+            <img src="assets/images/eagle_hero.png" alt="Logo Eaglepunk">
+          </span>
+          <span class="brand-wordmark">EAGLEPUNK</span>
+        </a>
+
+        <nav class="main-nav" aria-label="Navigation principale">
+          <a href="#" class="active">Accueil</a>
+          <a href="#bieres">Nos bières</a>
+          <a href="#histoire">Notre histoire</a>
+          <a href="#engagements">Engagements</a>
+          <a href="#">Actus</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="header-actions">
+          <a href="#" class="icon-btn" aria-label="Mon compte"><i class="bi bi-person"></i></a>
+          <a href="#" class="icon-btn" aria-label="Panier"><i class="bi bi-bag"></i><span class="cart-badge">0</span></a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container-xxl px-4 px-lg-5">
+      <div class="row align-items-center g-4 g-lg-5">
+        <div class="col-lg-5">
+          <div class="hero-copy">
+            <h1 class="hero-title">Bières de caractère,<br>esprits libres</h1>
+            <div class="hero-divider"></div>
+
+            <p class="hero-text">
+              Eaglepunk, c'est l'alliance du savoir-faire brassicole
+              et d'un esprit sans compromis.<br>
+              Des bières artisanales audacieuses,<br>
+              brassées en France avec passion.
+            </p>
+
+            <div class="hero-actions">
+              <a href="#bieres" class="btn-gold">Découvrir nos bières</a>
+              <a href="#histoire" class="text-link">Notre histoire <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <div class="hero-logo-wrap">
+            <img class="hero-logo" src="assets/images/eagle_hero.png" alt="Eaglepunk bières artisanales">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="engagements" class="feature-bar">
+    <div class="container-xxl px-4 px-lg-5">
+      <div class="row g-0">
+        <div class="col-md-6 col-xl-3">
+          <div class="feature-item">
+            <img class="feature-icon" src="assets/images/houblon.png" alt="Houblon">
+            <div>
+              <h3 class="feature-title">Ingrédients sélectionnés</h3>
+              <p class="feature-text">Malts, houblons et levures rigoureusement choisis.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+          <div class="feature-item">
+            <img class="feature-icon" src="assets/images/tonneau.png" alt="Tonneau">
+            <div>
+              <h3 class="feature-title">Brassées en France</h3>
+              <p class="feature-text">Brassées dans le respect du craft et des traditions.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+          <div class="feature-item">
+            <img class="feature-icon" src="assets/images/feuille.png" alt="Feuille">
+            <div>
+              <h3 class="feature-title">Sans compromis</h3>
+              <p class="feature-text">Pas de conservateurs, ni d'additifs superflus.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+          <div class="feature-item last">
+            <img class="feature-icon" src="assets/images/eclair.png" alt="Éclair">
+            <div>
+              <h3 class="feature-title">Esprit punk</h3>
+              <p class="feature-text">Indépendantes, audacieuses et fièrement libres.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="bieres" class="section-shell">
+    <div class="container-xxl px-4 px-lg-5">
+      <div class="section-heading">
+        <div class="eyebrow">Notre gamme</div>
+        <h2 class="section-title">Des bières qui ont du punch</h2>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-sm-6 col-xl-3">
+          <article class="beer-card beer-card--ipa">
+            <div class="beer-brand">Eaglepunk</div>
+            <h3 class="beer-name">IPA</h3>
+            <div class="beer-subtitle">India Pale Ale</div>
+            <p class="beer-copy">Houblonnée, intense<br>et résolument ambrée.</p>
+            <a href="#" class="beer-btn">Découvrir</a>
+          </article>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+          <article class="beer-card beer-card--blonde">
+            <div class="beer-brand">Eaglepunk</div>
+            <h3 class="beer-name">Blonde</h3>
+            <div class="beer-subtitle">Blonde Ale</div>
+            <p class="beer-copy">Légère, équilibrée<br>et terriblement désaltérante.</p>
+            <a href="#" class="beer-btn">Découvrir</a>
+          </article>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+          <article class="beer-card beer-card--red">
+            <div class="beer-brand">Eaglepunk</div>
+            <h3 class="beer-name">Red</h3>
+            <div class="beer-subtitle">Red Ale</div>
+            <p class="beer-copy">Caramélisée et gourmande<br>avec une belle rondeur.</p>
+            <a href="#" class="beer-btn">Découvrir</a>
+          </article>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+          <article class="beer-card beer-card--american">
+            <div class="beer-brand">Eaglepunk</div>
+            <h3 class="beer-name">American</h3>
+            <div class="beer-subtitle">Pale Ale</div>
+            <p class="beer-copy">Fruitée, fraîche<br>et pleine de caractère.</p>
+            <a href="#" class="beer-btn">Découvrir</a>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="histoire" class="story-section">
+    <div class="container-xxl px-4 px-lg-5">
+      <div class="story-grid">
+        <div class="story-visual">
+          <div class="story-badge">
+            <img src="assets/images/houblon.png" alt="Brassées en France">
+            <span>Brassées en France<br>avec passion</span>
+          </div>
+        </div>
+
+        <div class="story-copy-wrap">
+          <div class="story-copy">
+            <div class="story-kicker">Notre histoire</div>
+            <h2 class="story-title">Nées d'une passion,<br>élevées par la liberté</h2>
+            <p>
+              Eaglepunk est née de l'envie de créer des bières qui nous ressemblent :
+              authentiques, audacieuses et sans compromis.
+            </p>
+            <p>
+              Chaque recette est pensée, brassée et affinée avec passion dans notre brasserie artisanale.
+              Ici, pas de règles. Juste le goût des bonnes choses et l'envie de les partager.
+            </p>
+            <a href="#" class="btn-gold mt-3">En savoir plus</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="newsletter-band">
+    <div class="container-xxl px-4 px-lg-5">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-5">
+          <div class="tribe-box">
+            <div class="tribe-icon">
+              <img src="assets/images/eagle_hero.png" alt="Tribu Eaglepunk">
+            </div>
+            <div>
+              <h2 class="tribe-title">Rejoignez la tribu</h2>
+              <p class="tribe-text">
+                Actualités, nouvelles bières, événements...<br>
+                Restez informés de tout ce qui se passe chez Eaglepunk.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <form class="newsletter-form" action="#" method="post">
+            <input type="email" name="email" placeholder="Votre email" aria-label="Votre email">
+            <button type="submit">S'inscrire</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact" class="site-footer">
+    <div class="container-xxl px-4 px-lg-5">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand-word">Eaglepunk</div>
+          <div class="footer-brand-sub">Bières artisanales</div>
+          <div class="socials">
+            <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+            <a href="#" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Navigation</h3>
+          <div class="footer-links">
+            <a href="#">Accueil</a>
+            <a href="#bieres">Nos bières</a>
+            <a href="#histoire">Notre histoire</a>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="footer-title">&nbsp;</h3>
+          <div class="footer-links">
+            <a href="#engagements">Engagements</a>
+            <a href="#">Actus</a>
+            <a href="#contact">Contact</a>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Aide</h3>
+          <div class="footer-links mb-3">
+            <a href="#">FAQ</a>
+            <a href="#">Mentions légales</a>
+          </div>
+
+          <h3 class="footer-title">Contact</h3>
+          <div class="footer-links">
+            <a href="mailto:contact@eaglepunk.fr">contact@eaglepunk.life</a>
+            <span>Brassées en France 🇫🇷</span>
+          </div>
+        </div>
+
+        <div class="footer-badge" aria-hidden="true">
+          <div class="badge-country">FR</div>
+          <div class="badge-small">Brassées en France<br>avec passion</div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">© 2026 Eaglepunk · Bières artisanales. Tous droits réservés.</div>
+    </div>
+  </footer>
+
+</body>
+</html>
